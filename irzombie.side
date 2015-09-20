@@ -1,3 +1,4 @@
+irzombie.c
 lib/libbadgetools/accel_shaken.c
 lib/libbadgetools/accelerometer.c
 lib/libbadgetools/badgealpha.c
@@ -89,7 +90,6 @@ lib/libbadgetools/peb_stringView.c
 lib/libbadgetools/peb_text.c
 lib/libbadgetools/sscan_ct.c
 lib/libbadgetools/peb_irclear.c
-irzombie.c
 >compiler=C
 >memtype=xmmc
 >optimize=-Os
