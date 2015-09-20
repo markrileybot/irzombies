@@ -6,9 +6,9 @@
 #include "simpletools.h"                     // Include simpletools library
 #include "badgetools.h"                      // Include badgetools library
 
-#define ST_ZOMBIE 0x0000
-#define ST_INFECTED 0x0001
-#define ST_HUMAN 0x0002
+#define ST_ZOMBIE 0x0001
+#define ST_INFECTED 0x0002
+#define ST_HUMAN 0x0004
 #define MAX_SCAN_TIME 10
 #define FLICKER_TIME 100
 #define INFECTION_TIME 300
@@ -38,6 +38,7 @@ void flicker() {
 void init()
 {
     printf("Badge setup...\n");
+    pause(1000);
     badge_setup();
     printf("Badge setup\n");
     you.state = ST_HUMAN; 
@@ -57,7 +58,7 @@ void init()
             you.state = ST_ZOMBIE;
             break;        
         } else if(buttonState) {
-            you.state = ST_HUMAN | ST_INFECTED;
+            you.state = ST_INFECTED;
             you.infectionTimer = INFECTION_TIME;
             break;
         }
@@ -70,46 +71,56 @@ void showPlayer() {
     clear();
     text_size(LARGE);
     
-    if(you.state & ST_INFECTED) {
-        color = YELLOW;
-        oledprint("INFECTED\n");
-    } else if(you.state & ST_HUMAN) {
-        color = GREEN;        
-        oledprint("SURVIVOR\n");
-    } else {
-        color = RED;
-        oledprint(" Z E D\n");
+    switch(you.state) {
+        case ST_INFECTED:
+            color = YELLOW;
+            oledprint("INFECTED\n");
+            break;
+        case ST_HUMAN:
+            color = GREEN;        
+            oledprint("SURVIVOR\n");  
+            break;
+        case ST_ZOMBIE:
+        default:
+            color = RED;
+            oledprint(" Z E D\n");
+            break;   
     }
+}
+
+void attack() {
+    printf("STATE: %s\n", you.state);
+    irprint("%s\n", you.state);
+    flicker();
 }
 
 void runZombie() {
     while(1) {
         if(buttons() == 64) {
-            printf("STATE: %d\n", you.state);
-            irprint("%s\n", you.state);
-            flicker();
+            attack();
         }
     }
 }
 
 void runHuman() {
-    while(you.state & ST_HUMAN) {
+    while(1) {
         memset(recvBuf, 0, 8);
         irscan("%s", recvBuf);
         if(strlen(recvBuf)) {
-            if(recvBuf[0] & ST_INFECTED) {
+            if(recvBuf[0] == ST_INFECTED) {
                 // noop
                 continue;
-            } else if(recvBuf[0] & ST_HUMAN && you.state & ST_INFECTED) {
+            } else if(recvBuf[0] == ST_HUMAN && you.state == ST_INFECTED) {
                 leds(0b000000);
                 you.state = ST_HUMAN;
                 break;
-            } else if(recvBuf[0] & ST_ZOMBIE && !(you.state & ST_INFECTED)) {
-                you.state &= ST_INFECTED;
+            } else if(recvBuf[0] == ST_ZOMBIE && you.state != ST_INFECTED) {
+                leds(0b000000);                
+                you.state = ST_INFECTED;
                 you.infectionTimer = INFECTION_TIME;
                 break;
             }
-        } else if(you.state & ST_INFECTED) {
+        } else if(you.state == ST_INFECTED) {
             if(! --you.infectionTimer) {
                 leds(0b000000);
                 you.state = ST_ZOMBIE;          
@@ -121,9 +132,7 @@ void runHuman() {
                 }
             }
         } else if(buttons() == 64) {
-            printf("STATE: %s\n", you.state);
-            irprint("%s\n", you.state);
-            flicker();
+            attack();
         }
     }
 }
@@ -137,10 +146,15 @@ void main()                                  // Main function
         
         irclear();
         rgbs(color, color);
-        if(you.state & ST_HUMAN) {
-            runHuman();
-        } else {
-            runZombie();
+        switch(you.state) {
+            case ST_HUMAN:
+            case ST_INFECTED:
+                runHuman();
+                break;
+            case ST_ZOMBIE:
+            default:
+                runZombie();
+                break;
         }
         rgbs(OFF, OFF);
     }
