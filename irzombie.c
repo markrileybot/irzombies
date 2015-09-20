@@ -14,12 +14,12 @@
 #define INFECTION_TIME 300
 #define NUM_LEDS 6
 
-int scanTime, color, buttonState;
+int scanTime, color, buttonState, attackerState;
 char recvBuf[8];
 
 typedef struct player
 {
-    char state; // zombie/human/infected
+    int state; // zombie/human/infected
     int infectionTimer;
 } player_t;
 
@@ -89,8 +89,8 @@ void showPlayer() {
 }
 
 void attack() {
-    printf("STATE: %s\n", you.state);
-    irprint("%s\n", you.state);
+    printf("STATE: %d\n", you.state);
+    irprint("%d\n", you.state);
     flicker();
 }
 
@@ -107,14 +107,18 @@ void runHuman() {
         memset(recvBuf, 0, 8);
         irscan("%s", recvBuf);
         if(strlen(recvBuf)) {
-            if(recvBuf[0] == ST_INFECTED) {
+            attackerState = atoi(recvBuf);        
+            if(attackerState == ST_INFECTED) {
+                printf("NOOP!!!\n");                
                 // noop
                 continue;
-            } else if(recvBuf[0] == ST_HUMAN && you.state == ST_INFECTED) {
+            } else if(attackerState == ST_HUMAN && you.state == ST_INFECTED) {
+                printf("HEALED!!!\n");                
                 leds(0b000000);
                 you.state = ST_HUMAN;
                 break;
-            } else if(recvBuf[0] == ST_ZOMBIE && you.state != ST_INFECTED) {
+            } else if(attackerState == ST_ZOMBIE && you.state != ST_INFECTED) {
+                printf("INFECTED!!!\n");
                 leds(0b000000);                
                 you.state = ST_INFECTED;
                 you.infectionTimer = INFECTION_TIME;
