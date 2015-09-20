@@ -1,6 +1,6 @@
 IR ZOMBIES!!!
 =============
-Fun humans vs zombies game for the OSH 2015 badge!
+Fun humans vs zombies game for the [Open Source Hardware Summit 2015 badge](http://2015.oshwa.org/2015/08/24/ohs-2015-interactive-badge/)!
 
 
 Building
