@@ -156,6 +156,7 @@ void game_draw_splash() {
     oledprint("    IRZOMBIES");
 
     printf("Draw splash\n");
+    screen_auto(OFF);
     for(int y = 0; y < i; y++) {
         for(int ys = 0; ys < 2; ys++) {
             for(int x = 0; x < sizeof(int) * 8; x++) {
@@ -167,12 +168,14 @@ void game_draw_splash() {
             }
         }
     }
+    screen_update();
+    screen_auto(ON);
 
     printf("Wait\n");
     text_size(SMALL);    
     cursor(0, 7);
     oledprint("eucleo.com");
-    pause(5000);
+    pause(2000);
 }
 
 /**
