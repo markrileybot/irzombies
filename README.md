@@ -2,7 +2,7 @@ IR ZOMBIES!!!
 =============
 Fun humans vs zombies game for the [Open Source Hardware Summit 2015 badge](http://2015.oshwa.org/2015/08/24/ohs-2015-interactive-badge/)!
 
-![Screen1] (https://raw.githubusercontent.com/markrileybot/irzombies/docs/docs/pics/20150921_172317.jpg)
+![Screen1] (https://raw.githubusercontent.com/markrileybot/irzombies/docs/docs/pics/Screen1.jpg)
 
 Building
 --------
