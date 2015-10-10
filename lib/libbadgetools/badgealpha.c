@@ -1,7 +1,7 @@
 #include "simpletools.h"
 #include "badgetools.h"
 
-volatile int32_t     cpcog;
+volatile int32_t 	cpcog;
 int i2cLock = 0;
 
 i2c *st_eeprom;
@@ -28,33 +28,22 @@ int cogIRcom;
 //__attribute__((constructor))
 int32_t badge_setup(void)
 {
-printf("Start\n");
   touch_start(TPCount, TPPins, TPDischarge);
   if(!eei2cLockFlag)
   {
-printf("1\n");
     eei2cLock = locknew();
     lockclr(eei2cLock);
     eei2cLockFlag = 1;
-printf("1\n");
   }
   init_MMA7660FC();
-printf("1\n");
   if(!st_eeInitFlag) ee_init();
-printf("1\n");
   cpcog = light_start();
-printf("1\n");
   cogIRcom = ircom_start(IR_IN, IR_OUT, 2400, 38500);
-printf("1\n");
   screen_init(OLED_CS, OLED_DC, OLED_DAT, OLED_CLK, OLED_RST, SSD1306_SWITCHCAPVCC, TYPE_128X64);
-printf("1\n");
   screen_auto(ON);
-printf("1\n");
   clear();
-printf("1\n");
   text_size(LARGE);
-    printf("Return\n");  
-return 0;
+  return 0;
 }
 
 /*
