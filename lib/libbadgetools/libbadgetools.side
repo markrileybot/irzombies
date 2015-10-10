@@ -91,11 +91,12 @@ peb_text.c
 sscan_ct.c
 peb_irclear.c
 >compiler=C
->memtype=lmm
+>memtype=cmm main ram compact
 >optimize=-Os
 >-m32bit-doubles
 >-Wall
 >-fno-exceptions
 >defs::-std=c99
 >-lm
+>-create_library
 >BOARD::ACTIVITYBOARD
