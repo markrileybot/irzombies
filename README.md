@@ -10,3 +10,7 @@ Building
 	- Note: I had to build from soure https://code.google.com/p/propside/source/browse/#hg%2Fpropside
 2. Open the irzombie.side in the simple ide
 3. Build and run!
+
+Shameless self promotion
+1. http://hackaday.com/2015/09/25/becoming-a-zombie-with-the-hackable-electronic-badge/
+2. https://www.youtube.com/watch?v=ZX0Yli3p8S4
