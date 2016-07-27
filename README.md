@@ -12,5 +12,6 @@ Building
 3. Build and run!
 
 Shameless self promotion
+------------------------
 1. http://hackaday.com/2015/09/25/becoming-a-zombie-with-the-hackable-electronic-badge/
 2. https://www.youtube.com/watch?v=ZX0Yli3p8S4
